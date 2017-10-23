@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryAccent</item>
+        <item name="android:windowBackground">@color/colorPrimaryAccent</item>
     </style>
 
     <!-- Secondary application theme. -->
@@ -14,6 +15,7 @@
         <item name="colorPrimary">@color/colorSecondary</item>
         <item name="colorPrimaryDark">@color/colorSecondaryDark</item>
         <item name="colorAccent">@color/colorSecondaryAccent</item>
+        <item name="android:windowBackground">@color/colorSecondaryAccent</item>
     </style>
 
 </resources>
