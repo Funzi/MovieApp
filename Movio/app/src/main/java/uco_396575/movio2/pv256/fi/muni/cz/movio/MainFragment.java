@@ -1,9 +1,11 @@
 package uco_396575.movio2.pv256.fi.muni.cz.movio;
 
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,6 +45,7 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
         return view;
     }
 
+    //TODO change after getting real data
     @NonNull
     private List<Movie> getMovies() {
         List<Movie> input = new ArrayList<>();
@@ -55,5 +58,12 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
     @Override
     public void onClick(Movie movie) {
         ((MainActivity) getActivity()).addDetailFragmentWithMovie(movie);
+    }
+
+    //TODO change after getting real data
+    @Override
+    public Drawable getDrawable(int pos) {
+        if(pos % 2 == 0) return ContextCompat.getDrawable(getActivity(), R.drawable.star_wars);
+        else return ContextCompat.getDrawable(getActivity(), R.drawable.it);
     }
 }
