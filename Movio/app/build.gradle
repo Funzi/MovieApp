@@ -24,6 +24,7 @@ android {
             primary {
                 applicationIdSuffix ".primary"
                 versionNameSuffix "-primary"
+                buildConfigField("boolean", "LOGGING","true")
             }
             secondary {
                 applicationIdSuffix ".secondary"
