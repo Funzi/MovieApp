@@ -44,7 +44,7 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
         mRecyclerView.setAdapter(mAdapter);
         return view;
     }
-    
+
     //TODO change after getting real data
     @NonNull
     private List<Movie> getMovies() {
