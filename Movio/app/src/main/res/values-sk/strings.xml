@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movio</string>
+    <string name="latest_release">Najnovšie filmy</string>
+    <string name="popular">Populárne</string>
+    <string name="for_kids">Pre deti</string>
+    <string name="no_data">Žiadne dáta</string>
+</resources>
