@@ -1,4 +1,8 @@
 apply plugin: 'com.android.application'
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+def versionBuild = 0
 
 android {
     compileSdkVersion 26
@@ -8,22 +12,16 @@ android {
         applicationId "uco_396575.movio2.pv256.fi.muni.cz.movio"
         minSdkVersion 17
         targetSdkVersion 26
-
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
        }
     buildTypes {
-        def VERSION_MAJOR = "0"
-        def VERSION_MINOR  = "1"
-        def VERSION_PATCH = "0"
-        def VERSION_BUILD = "0"
 
         debug {
-            defaultConfig.versionName VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_PATCH + "." + VERSION_BUILD + "-" + defaultConfig.versionCode
+            defaultConfig.versionName "${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}-${defaultConfig.versionCode}"
         }
         release {
-            defaultConfig.versionName VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_PATCH
+            defaultConfig.versionName "${versionMajor}.${versionMinor}.${versionPatch}"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //selecting only fully translated languages
