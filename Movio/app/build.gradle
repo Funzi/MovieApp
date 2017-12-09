@@ -26,6 +26,8 @@ android {
             defaultConfig.versionName VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_PATCH
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //selecting only fully translated languages
+            defaultConfig.resConfigs "en", "sk"
         }
 
         productFlavors {
