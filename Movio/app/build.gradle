@@ -8,18 +8,26 @@ android {
         applicationId "uco_396575.movio2.pv256.fi.muni.cz.movio"
         minSdkVersion 17
         targetSdkVersion 26
+
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
+       }
     buildTypes {
+        def VERSION_MAJOR = "0"
+        def VERSION_MINOR  = "1"
+        def VERSION_PATCH = "0"
+        def VERSION_BUILD = "0"
+
         debug {
-            
+            defaultConfig.versionName VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_PATCH + "." + VERSION_BUILD + "-" + defaultConfig.versionCode
         }
         release {
+            defaultConfig.versionName VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_PATCH
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
         productFlavors {
             primary {
                 applicationIdSuffix ".primary"
