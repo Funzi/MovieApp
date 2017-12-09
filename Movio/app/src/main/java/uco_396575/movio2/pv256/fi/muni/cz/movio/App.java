@@ -20,8 +20,4 @@ public class App extends Application {
                     .build());
         }
     }
-
-    public boolean isDualPane() {
-        return getResources().getBoolean(R.bool.twoPaneMode);
-    }
 }

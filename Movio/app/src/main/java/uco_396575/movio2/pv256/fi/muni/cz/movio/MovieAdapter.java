@@ -66,12 +66,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         public RelativeLayout bottomView;
         public TextView movieName;
         public ImageView movieImage;
-        public View layout;
         private OnMovieClickListener mListener;
 
         public ViewHolder(View v, OnMovieClickListener listener) {
             super(v);
-            layout = v;
             movieName = v.findViewById(R.id.movie_name);
             movieImage = v.findViewById(R.id.movie_image);
             bottomView = v.findViewById(R.id.movie_bottom_view);
