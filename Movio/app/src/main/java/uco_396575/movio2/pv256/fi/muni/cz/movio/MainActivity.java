@@ -76,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         isShowingDetail = savedInstanceState.getBoolean(DETAIL_TAG);
         removeDetailFragment();
-        if (isShowingDetail) addDetailFragment();
+        if (isShowingDetail) {
+            addDetailFragment();
+        }
 
         super.onRestoreInstanceState(savedInstanceState);
     }
@@ -96,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void addDetailFragment() {
         DetailFragment fragmentDetail = (DetailFragment) getFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
-        if (fragmentDetail != null)
+        if (fragmentDetail != null) {
             addDetailFragment(DetailFragment.newInstance(fragmentDetail.getMovie()));
+        }
         else isShowingDetail = false;
     }
 
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft;
         ft = fm.beginTransaction();
-        if (((App) getApplication()).isDualPane()) {
+        if (getResources().getBoolean(R.bool.twoPaneMode)) {
             ft.replace(R.id.detail_fragment, fragmentDetail, DETAIL_FRAGMENT_TAG);
         } else {
             ft.replace(R.id.list_fragment, fragmentDetail, DETAIL_FRAGMENT_TAG);

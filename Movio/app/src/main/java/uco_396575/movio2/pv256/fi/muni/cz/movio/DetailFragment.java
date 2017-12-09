@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class DetailFragment extends Fragment {
-    Movie mMovie;
+    private Movie mMovie;
 
     public Movie getMovie() {
         return mMovie;

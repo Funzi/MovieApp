@@ -5,11 +5,11 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
-    long realeaseDate;
-    String coverPath;
-    String title;
-    String backDrop;
-    float popularity;
+    private long realeaseDate;
+    private String coverPath;
+    private String title;
+    private String backDrop;
+    private float popularity;
 
 
     public Movie() {
