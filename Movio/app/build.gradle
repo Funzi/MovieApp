@@ -6,8 +6,6 @@ def versionBuild = 0
 
 android {
     signingConfigs {
-        primaryrelease {
-        }
         release {
             storeFile file(RELEASE_STORE_FILE)
             storePassword RELEASE_STORE_PASSWORD
