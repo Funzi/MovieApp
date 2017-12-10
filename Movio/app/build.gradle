@@ -42,13 +42,13 @@ android {
                 applicationIdSuffix ".primary"
                 versionNameSuffix "-primary"
                 buildConfigField("boolean", "LOGGING", "true")
-                defaultConfig.resValue "string", "app_name", "Movio"
+                resValue "string", "app_name", "Movio"
             }
             secondary {
                 applicationIdSuffix ".secondary"
                 versionNameSuffix "-secondary"
                 buildConfigField("boolean", "LOGGING", "false")
-                defaultConfig.resValue "string", "app_name", "Movio2"
+                resValue "string", "app_name", "Movio2"
 
             }
         }
