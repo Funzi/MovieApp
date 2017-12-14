@@ -1,23 +1,56 @@
 apply plugin: 'com.android.application'
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+def versionBuild = 0
 
 android {
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
+    flavorDimensions "default"
     defaultConfig {
         applicationId "uco_396575.movio2.pv256.fi.muni.cz.movio"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
         debug {
-            
+            defaultConfig.versionName "${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}-${defaultConfig.versionCode}"
         }
         release {
+            defaultConfig.versionName "${versionMajor}.${versionMinor}.${versionPatch}"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //selecting only fully translated languages
+            defaultConfig.resConfigs "en", "sk"
+            signingConfig signingConfigs.release
+        }
+
+        productFlavors {
+            primary {
+                applicationIdSuffix ".primary"
+                versionNameSuffix "-primary"
+                buildConfigField("boolean", "LOGGING", "true")
+                resValue "string", "app_name", "Movio"
+            }
+            secondary {
+                applicationIdSuffix ".secondary"
+                versionNameSuffix "-secondary"
+                buildConfigField("boolean", "LOGGING", "false")
+                resValue "string", "app_name", "Movio2"
+
+            }
         }
     }
     compileOptions {
