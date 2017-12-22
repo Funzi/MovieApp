@@ -3,7 +3,6 @@ package uco_396575.movio2.pv256.fi.muni.cz.movio;
 import android.app.Fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,10 +14,16 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickListener {
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.DownloadAsyncTask;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClient;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientOkHttpImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieDto;
+
+public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickListener, DownloadAsyncTask.OnSuccesfullDownload {
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
+    private MovieClient mClient;
 
     public static MainFragment newInstance() {
         Bundle args = new Bundle();
@@ -30,6 +35,9 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mClient = new MovieClientOkHttpImpl();
+        mClient.getAllMovies();
+        new DownloadAsyncTask(mClient, getActivity(), this).execute();
     }
 
     @Nullable
@@ -40,24 +48,14 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MovieAdapter(getMovies(), this);
+        mAdapter = new MovieAdapter(new ArrayList<>(), this, getActivity());
         mRecyclerView.setAdapter(mAdapter);
         return view;
     }
 
-    //TODO change after getting real data
-    @NonNull
-    private List<Movie> getMovies() {
-        List<Movie> input = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            input.add(new Movie("Movie " + i));
-        }
-        return input;
-    }
-
     @Override
-    public void onClick(Movie movie) {
-        ((MainActivity) getActivity()).addDetailFragmentWithMovie(movie);
+    public void onClick(MovieDto movieDto) {
+        ((MainActivity) getActivity()).addDetailFragmentWithMovie(movieDto);
     }
 
     //TODO change after getting real data
@@ -65,5 +63,11 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
     public Drawable getDrawable(int pos) {
         if(pos % 2 == 0) return ContextCompat.getDrawable(getActivity(), R.drawable.star_wars);
         else return ContextCompat.getDrawable(getActivity(), R.drawable.it);
+    }
+
+    @Override
+    public void updateData(List<MovieDto> movies) {
+        mAdapter.setMovies(movies);
+        mAdapter.notifyDataSetChanged();
     }
 }

@@ -1,5 +1,6 @@
 package uco_396575.movio2.pv256.fi.muni.cz.movio;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,22 +14,29 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientOkHttpImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieDto;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private List<Movie> movies;
+    private List<MovieDto> movies;
     private OnMovieClickListener mListener;
+    private Context mContext;
 
     public interface OnMovieClickListener {
-        void onClick(Movie movie);
+        void onClick(MovieDto movieDto);
 
         Drawable getDrawable(int pos);
     }
 
-    public MovieAdapter(List<Movie> movieList, OnMovieClickListener listener) {
-        movies = movieList;
+    public MovieAdapter(List<MovieDto> movies, OnMovieClickListener listener, Context context) {
+        this.movies = movies;
         mListener = listener;
+        mContext = context;
     }
 
     @Override
@@ -43,23 +51,31 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final Movie movie = movies.get(position);
+        final MovieDto movie = movies.get(position);
         holder.movieName.setText(movie.getTitle());
-        Drawable movieImage = mListener.getDrawable(position);
-        holder.movieImage.setImageDrawable(movieImage);
-        holder.bottomView.setBackgroundColor(getBottomViewBackground((BitmapDrawable) movieImage));
+        String address = new MovieClientOkHttpImpl().getPicture(movies.get(position).getPosterPath());
+        Picasso.with(mContext)
+                .load(address)
+                .placeholder(R.id.movie_image)
+                .into(holder.movieImage);
+        holder.bottomView.setBackgroundColor(getBottomViewBackground(holder.movieImage));
         holder.bottomView.getBackground().setAlpha(40);
     }
 
-    public int getBottomViewBackground(BitmapDrawable drawable) {
-        Bitmap movieBitmap = drawable.getBitmap();
-        Palette palette = Palette.from(movieBitmap).generate();
+    public int getBottomViewBackground(ImageView drawable) {
+        if(drawable.getDrawable() == null) return Color.BLACK;
+        Bitmap bitmap = ((BitmapDrawable)drawable.getDrawable()).getBitmap();
+        Palette palette = Palette.from(bitmap).generate();
         return palette.getDarkVibrantColor(Color.BLACK);
     }
 
     @Override
     public int getItemCount() {
         return movies.size();
+    }
+
+    public void setMovies(List<MovieDto> movies) {
+        this.movies = movies;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

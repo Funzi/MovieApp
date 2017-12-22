@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieDto;
+
 public class MainActivity extends AppCompatActivity {
 
     private final String DETAIL_TAG = "detail";
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         isShowingDetail = true;
     }
 
-    public void addDetailFragmentWithMovie(Movie movie) {
-        addDetailFragment(DetailFragment.newInstance(movie));
+    public void addDetailFragmentWithMovie(MovieDto movieDto) {
+        addDetailFragment(DetailFragment.newInstance(movieDto));
     }
 }
