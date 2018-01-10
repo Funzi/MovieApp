@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
+
 public class MainActivity extends AppCompatActivity {
 
     private final String DETAIL_TAG = "detail";

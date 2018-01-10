@@ -9,12 +9,11 @@
 
         <ImageView
             android:id="@+id/movie_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/star_wars"
-             />
+                         />
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,11 +31,11 @@
                     android:textSize="30dp" />
 
                 <TextView
+                    android:id="@+id/movie_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryAccent"
                     android:textSize="30dp"
-                    android:text="5/5"
                     android:layout_alignEnd="@+id/movie_name"/>
         </RelativeLayout>
     </RelativeLayout>

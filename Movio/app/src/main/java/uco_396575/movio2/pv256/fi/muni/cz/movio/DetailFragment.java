@@ -3,13 +3,36 @@ package uco_396575.movio2.pv256.fi.muni.cz.movio;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class DetailFragment extends Fragment {
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.adapter.CastAdapter;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.DownloadCastAsyncTask;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientOkHttpImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Cast;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.model.MoviePersonnel;
+
+public class DetailFragment extends Fragment implements DownloadCastAsyncTask.OnSuccessfulCastDownload {
+    private final static String MOVIE_TAG = "movie";
     private Movie mMovie;
+    private MovieViewHolder mViewHolder;
+    private CastAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private List<Cast> cast;
+
 
     public Movie getMovie() {
         return mMovie;
@@ -18,13 +41,20 @@ public class DetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        mRecyclerView = view.findViewById(R.id.movie_cast_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
+        cast = new ArrayList<>();
+        mAdapter = new CastAdapter(cast);
+        mRecyclerView.setAdapter(mAdapter);
+        return view;
     }
 
     public static DetailFragment newInstance(Movie movie) {
         Bundle args = new Bundle();
         DetailFragment fragment = new DetailFragment();
-        args.putParcelable("movie", movie);
+        args.putParcelable(MOVIE_TAG, movie);
         fragment.setArguments(args);
         return fragment;
     }
@@ -32,15 +62,65 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
-            mMovie = getArguments().getParcelable("movie");
+            mMovie = getArguments().getParcelable(MOVIE_TAG);
+            new DownloadCastAsyncTask(new MovieClientOkHttpImpl(), this, mMovie.getId()).execute();
         }
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        TextView movieName = view.findViewById(R.id.movie_name);
-        movieName.setText(mMovie.getTitle());
+        initMovie(view);
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    void initMovie(View view) {
+        mViewHolder = new MovieViewHolder(view);
+        mViewHolder.name.setText(mMovie.getTitle());
+        mViewHolder.description.setText(mMovie.getOverview());
+        //mViewHolder.director.setText(mMovie);
+        mViewHolder.releaseDate.setText(mMovie.getReleaseDate());
+        String posterAddress = new MovieClientOkHttpImpl().getPicture(mMovie.getPosterPath());
+        Picasso.with(mViewHolder.poster.getContext())
+                .load(posterAddress)
+                .placeholder(R.drawable.star_wars)
+                .into(mViewHolder.poster);
+        String coverAddress = new MovieClientOkHttpImpl().getPictureHigherQuality(mMovie.getBackdropPath());
+        Picasso.with(mViewHolder.poster.getContext())
+                .load(coverAddress)
+                .noPlaceholder()
+                .fit()
+                .into(mViewHolder.cover);
+
+    }
+
+    @Override
+    public void updateData(MoviePersonnel personnel) {
+        mViewHolder.director.setText(personnel.getDirector().getName());
+        this.cast = personnel.getCast();
+        mAdapter.setCast(cast);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    static class MovieViewHolder {
+        @BindView(R.id.movie_poster_image)
+        ImageView poster;
+        @BindView(R.id.movie_cover_image)
+        ImageView cover;
+        @BindView(R.id.movie_cast_list)
+        RecyclerView actors;
+        @BindView(R.id.movie_name)
+        TextView name;
+        @BindView(R.id.movie_release_date)
+        TextView releaseDate;
+        @BindView(R.id.movie_director_name)
+        TextView director;
+        @BindView(R.id.movie_description)
+        TextView description;
+
+        public MovieViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+
     }
 }

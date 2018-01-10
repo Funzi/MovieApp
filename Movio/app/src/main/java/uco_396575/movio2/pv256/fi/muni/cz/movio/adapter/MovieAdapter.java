@@ -1,9 +1,8 @@
-package uco_396575.movio2.pv256.fi.muni.cz.movio;
+package uco_396575.movio2.pv256.fi.muni.cz.movio.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.R;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientOkHttpImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
@@ -22,12 +29,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     public interface OnMovieClickListener {
         void onClick(Movie movie);
-
-        Drawable getDrawable(int pos);
     }
 
-    public MovieAdapter(List<Movie> movieList, OnMovieClickListener listener) {
-        movies = movieList;
+    public MovieAdapter(List<Movie> movies, OnMovieClickListener listener) {
+        this.movies = movies;
         mListener = listener;
     }
 
@@ -45,15 +50,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Movie movie = movies.get(position);
         holder.movieName.setText(movie.getTitle());
-        Drawable movieImage = mListener.getDrawable(position);
-        holder.movieImage.setImageDrawable(movieImage);
-        holder.bottomView.setBackgroundColor(getBottomViewBackground((BitmapDrawable) movieImage));
+
+        holder.movieRating.setText(Float.toString(movie.getVoteAverage()));
+        String address = new MovieClientOkHttpImpl().getPictureHigherQuality(movies.get(position).getPosterPath());
+        Picasso.with(holder.movieImage.getContext())
+                .load(address)
+                .noPlaceholder()
+                .into(holder.movieImage)
+        ;
+
+        holder.bottomView.setBackgroundColor(getBottomViewBackground(holder.movieImage));
         holder.bottomView.getBackground().setAlpha(40);
     }
 
-    public int getBottomViewBackground(BitmapDrawable drawable) {
-        Bitmap movieBitmap = drawable.getBitmap();
-        Palette palette = Palette.from(movieBitmap).generate();
+    public int getBottomViewBackground(ImageView drawable) {
+        if (drawable.getDrawable() == null) return Color.BLACK;
+        Bitmap bitmap = ((BitmapDrawable) drawable.getDrawable()).getBitmap();
+        Palette palette = Palette.from(bitmap).generate();
         return palette.getDarkVibrantColor(Color.BLACK);
     }
 
@@ -62,17 +75,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return movies.size();
     }
 
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+        this.notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        @BindView(R.id.movie_bottom_view)
         public RelativeLayout bottomView;
+        @BindView(R.id.movie_name)
         public TextView movieName;
+        @BindView(R.id.movie_rating)
+        public TextView movieRating;
+        @BindView(R.id.movie_image)
         public ImageView movieImage;
         private OnMovieClickListener mListener;
 
         public ViewHolder(View v, OnMovieClickListener listener) {
             super(v);
-            movieName = v.findViewById(R.id.movie_name);
-            movieImage = v.findViewById(R.id.movie_image);
-            bottomView = v.findViewById(R.id.movie_bottom_view);
+            ButterKnife.bind(this, v);
             v.setOnClickListener(this);
             v.setOnLongClickListener(this);
             mListener = listener;
