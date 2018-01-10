@@ -1,11 +1,11 @@
-package uco_396575.movio2.pv256.fi.muni.cz.movio.api;
+package uco_396575.movio2.pv256.fi.muni.cz.movio.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MovieDto implements Parcelable {
+public class Movie implements Parcelable {
 
     @SerializedName("id")
     int id;
@@ -49,10 +49,10 @@ public class MovieDto implements Parcelable {
     @SerializedName("vote_count")
     int voteCount;
 
-    public MovieDto() {
+    public Movie() {
     }
 
-    public MovieDto(int id, boolean isAdult, String backdropPath, int[] genreIds, String originalLanguage, String originalTitle, String overview, String releaseDate, String posterPath, float popularity, String title, boolean isVideo, float voteAverage, int voteCount) {
+    public Movie(int id, boolean isAdult, String backdropPath, int[] genreIds, String originalLanguage, String originalTitle, String overview, String releaseDate, String posterPath, float popularity, String title, boolean isVideo, float voteAverage, int voteCount) {
         this.id = id;
         this.isAdult = isAdult;
         this.backdropPath = backdropPath;
@@ -205,7 +205,7 @@ public class MovieDto implements Parcelable {
         dest.writeInt(this.voteCount);
     }
 
-    protected MovieDto(Parcel in) {
+    protected Movie(Parcel in) {
         this.id = in.readInt();
         this.isAdult = in.readByte() != 0;
         this.backdropPath = in.readString();
@@ -222,15 +222,15 @@ public class MovieDto implements Parcelable {
         this.voteCount = in.readInt();
     }
 
-    public static final Parcelable.Creator<MovieDto> CREATOR = new Parcelable.Creator<MovieDto>() {
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         @Override
-        public MovieDto createFromParcel(Parcel source) {
-            return new MovieDto(source);
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
         }
 
         @Override
-        public MovieDto[] newArray(int size) {
-            return new MovieDto[size];
+        public Movie[] newArray(int size) {
+            return new Movie[size];
         }
     };
 }

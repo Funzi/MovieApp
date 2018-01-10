@@ -4,34 +4,102 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="2">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="?colorPrimary">
+
+        <ImageView
+            android:id="@+id/movie_cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+
+        <ImageView
+            android:id="@+id/movie_poster_image"
+            android:layout_width="80dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="130dp" />
+
         <TextView
             android:id="@+id/movie_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="dsada"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_cover_image"
+            android:layout_toRightOf="@id/movie_poster_image"
+            android:text="Star Wars" />
+
+        <TextView
+            android:id="@+id/movie_director_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_name"
+            android:layout_toEndOf="@id/movie_poster_image"
+            android:text="George Lucas" />
+
+        <TextView
+            android:id="@+id/movie_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_cover_image"
+            android:layout_toEndOf="@id/movie_name"
+            android:text="1980" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:weightSum="2">
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="Cast"
-                android:layout_weight="1"/>
 
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="Overview"
-                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cast"
+                    android:layout_marginBottom="20dp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/movie_cast_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scrollbars="vertical"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Overview" />
+
+                <TextView
+                    android:id="@+id/movie_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="14"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </RelativeLayout>

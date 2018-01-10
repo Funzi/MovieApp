@@ -7,32 +7,48 @@ import okhttp3.Request;
 
 
 public class MovieClientOkHttpImpl extends OkHttpClient implements MovieClient {
-    private String url;
     public MovieClientOkHttpImpl() {
         initUrl();
     }
 
     private void initUrl() {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(API_URL).newBuilder();
-        urlBuilder.addQueryParameter("api_key", API_KEY);
-        url = urlBuilder.build().toString();
     }
 
     @Override
-    public Call getAllMovies() {
-        return this.newCall(new Request.Builder()
-                .header("api_key", API_KEY)
-                .url(url)
-                .build());
+    public Call getMostPopular() {
+        return getCallWithSuffix(API_URL + MOST_POPULAR);
     }
 
     @Override
-    public Call getLatestReleases() {
-        return null;
+    public Call getBestScifi() {
+        return getCallWithSuffix(API_URL + BEST_SCIFI);
     }
+
+    @Override
+    public Call getCredits(Integer movieId) {
+        return getCallWithSuffix(API_URL + "/movie/" + movieId.toString() + "/credits");
+    }
+
 
     @Override
     public String getPicture(String pictureUrl) {
-        return PICTURES_URL + pictureUrl+ "?api_key=918a0448d083b9c38b5ea9e1a1519e6a" ;
+        return buildUrlWithApiKey(PICTURES_URL + pictureUrl);
+    }
+
+    @Override
+    public String getPictureHigherQuality(String pictureUrl) {
+        return buildUrlWithApiKey(PICTURE_URL_HIGHER_QUALITY + pictureUrl);
+    }
+
+    Call getCallWithSuffix(String url) {
+        return this.newCall(new Request.Builder()
+                .url(buildUrlWithApiKey(url))
+                .build());
+    }
+
+    private String buildUrlWithApiKey(String url) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
+        urlBuilder.addQueryParameter("api_key", API_KEY);
+        return urlBuilder.build().toString();
     }
 }
