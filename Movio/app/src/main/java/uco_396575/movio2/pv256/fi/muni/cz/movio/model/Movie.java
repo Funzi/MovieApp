@@ -1,12 +1,16 @@
 package uco_396575.movio2.pv256.fi.muni.cz.movio.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-
+@Entity
 public class Movie implements Parcelable {
-
+    @PrimaryKey
+    @NonNull
     @SerializedName("id")
     int id;
 
@@ -15,9 +19,9 @@ public class Movie implements Parcelable {
 
     @SerializedName("backdrop_path")
     String backdropPath;
-
-    @SerializedName("genre_ids")
-    int[] genreIds = new int[0];
+//
+//    @SerializedName("genre_ids")
+//    int[] genreIds = new int[0];
 
     @SerializedName("original_language")
     String originalLanguage;
@@ -56,7 +60,7 @@ public class Movie implements Parcelable {
         this.id = id;
         this.isAdult = isAdult;
         this.backdropPath = backdropPath;
-        this.genreIds = genreIds;
+//        this.genreIds = genreIds;
         this.originalLanguage = originalLanguage;
         this.originalTitle = originalTitle;
         this.overview = overview;
@@ -93,13 +97,13 @@ public class Movie implements Parcelable {
         this.backdropPath = backdropPath;
     }
 
-    public int[] getGenreIds() {
-        return genreIds;
-    }
-
-    public void setGenreIds(int[] genreIds) {
-        this.genreIds = genreIds;
-    }
+//    public int[] getGenreIds() {
+//        return genreIds;
+//    }
+//
+//    public void setGenreIds(int[] genreIds) {
+//        this.genreIds = genreIds;
+//    }
 
     public String getOriginalLanguage() {
         return originalLanguage;
@@ -192,7 +196,7 @@ public class Movie implements Parcelable {
         dest.writeInt(this.id);
         dest.writeByte(this.isAdult ? (byte) 1 : (byte) 0);
         dest.writeString(this.backdropPath);
-        dest.writeIntArray(this.genreIds);
+//        dest.writeIntArray(this.genreIds);
         dest.writeString(this.originalLanguage);
         dest.writeString(this.originalTitle);
         dest.writeString(this.overview);
@@ -209,7 +213,7 @@ public class Movie implements Parcelable {
         this.id = in.readInt();
         this.isAdult = in.readByte() != 0;
         this.backdropPath = in.readString();
-        this.genreIds = in.createIntArray();
+//        this.genreIds = in.createIntArray();
         this.originalLanguage = in.readString();
         this.originalTitle = in.readString();
         this.overview = in.readString();

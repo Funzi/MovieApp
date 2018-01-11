@@ -3,6 +3,7 @@ package uco_396575.movio2.pv256.fi.muni.cz.movio;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import uco_396575.movio2.pv256.fi.muni.cz.movio.adapter.CastAdapter;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.ApiHelper;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.DownloadCastAsyncTask;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientRetrofitImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.db.AppDatabase;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Cast;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.MoviePersonnel;
@@ -33,6 +35,7 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
     private CastAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private List<Cast> cast;
+    private AppDatabase mDb;
 
 
     public Movie getMovie() {
@@ -66,6 +69,7 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
             mMovie = getArguments().getParcelable(MOVIE_TAG);
             new DownloadCastAsyncTask(new MovieClientRetrofitImpl(), this, mMovie.getId()).execute();
         }
+        mDb = AppDatabase.getInMemoryDatabase(getActivity().getApplicationContext());
         super.onCreate(savedInstanceState);
     }
 
@@ -92,7 +96,41 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
                 .noPlaceholder()
                 .fit()
                 .into(mViewHolder.cover);
+        if(isMovieInDb()) {
+            setFabPlus();
+        } else {
+            setFabMinus();
+        }
+        mViewHolder.fab.setOnClickListener(view1 -> {
+            if(!isMovieInDb()) {
+                addToDb();
+            } else {
+                removeFromDb();
+            }
+        });
 
+    }
+
+    private boolean isMovieInDb() {
+        return mDb.movieModel().findMovieById(mMovie.getId()) != null;
+    }
+
+    private void addToDb() {
+        mDb.movieModel().insertMovie(mMovie);
+        setFabPlus();
+    }
+
+    private void removeFromDb() {
+        mDb.movieModel().deleteMovie(mMovie);
+        setFabMinus();
+    }
+
+    private void setFabPlus() {
+        mViewHolder.fab.setImageResource(R.drawable.ic_remove_circle_black_24dp);
+    }
+
+    private void setFabMinus() {
+        mViewHolder.fab.setImageResource(R.drawable.ic_add_circle_black_24dp);
     }
 
     @Override
@@ -118,10 +156,11 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
         TextView director;
         @BindView(R.id.movie_description)
         TextView description;
+        @BindView(R.id.movie_fab)
+        FloatingActionButton fab;
 
         public MovieViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
-
     }
 }
