@@ -14,9 +14,9 @@ import java.util.List;
 
 import uco_396575.movio2.pv256.fi.muni.cz.movio.adapter.MovieAdapter;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.DownloadMovieAsyncTask;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClient;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientOkHttpImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientRetrofitImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 
 public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickListener, DownloadMovieAsyncTask.OnSuccessfulDownload {
 
@@ -36,7 +36,7 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         movies = new ArrayList<>();
-        mClient = new MovieClientOkHttpImpl();
+        mClient = new MovieClientRetrofitImpl();
         mClient.getMostPopular();
         new DownloadMovieAsyncTask(mClient, this).execute();
     }

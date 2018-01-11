@@ -2,18 +2,11 @@ package uco_396575.movio2.pv256.fi.muni.cz.movio.api;
 
 import android.os.AsyncTask;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.IOException;
-import java.lang.reflect.Type;
 
-import okhttp3.Response;
+import retrofit2.Response;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.MoviePersonnel;
 
-/**
- * Created by david on 10-Jan-18.
- */
 
 public class DownloadCastAsyncTask extends AsyncTask<Void, MoviePersonnel, MoviePersonnel> {
     private MovieClient mClient;
@@ -40,15 +33,12 @@ public class DownloadCastAsyncTask extends AsyncTask<Void, MoviePersonnel, Movie
     @Override
     protected MoviePersonnel doInBackground(Void... voids) {
         try {
-            Response response = mClient.getCredits(movieId).execute();
+            Response<MoviePersonnel> response = mClient.getCredits(movieId).execute();
             if (!response.isSuccessful()) {
                 return null;
             }
-            String result = response.body().string();
-            Gson gson = new Gson();
-            Type type = new TypeToken<MoviePersonnel>() {
-            }.getType();
-            MoviePersonnel moviePersonnel = gson.fromJson(result, type);
+            MoviePersonnel moviePersonnel = response.body();
+
             return moviePersonnel;
         } catch (IOException e) {
             //Parse exception
