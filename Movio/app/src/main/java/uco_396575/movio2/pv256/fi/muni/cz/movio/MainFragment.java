@@ -20,13 +20,16 @@ import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 
 public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickListener, DownloadMovieAsyncTask.OnSuccessfulDownload {
 
+    private static final String MOVIES_TAG = "movies";
+
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
     private MovieClient mClient;
     private List<Movie> movies;
 
-    public static MainFragment newInstance() {
+    public static MainFragment newInstance(List<Movie> movies) {
         Bundle args = new Bundle();
+        args.putSerializable(MOVIES_TAG, (ArrayList) movies);
         MainFragment fragment = new MainFragment();
         fragment.setArguments(args);
         return fragment;
@@ -35,7 +38,8 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        movies = new ArrayList<>();
+        movies = (ArrayList<Movie>) getArguments().getSerializable(MOVIES_TAG);
+        if(movies == null) movies = new ArrayList<>();
         mClient = new MovieClientRetrofitImpl();
         mClient.getMostPopular();
         new DownloadMovieAsyncTask(mClient, this).execute();

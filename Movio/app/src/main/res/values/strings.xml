@@ -3,4 +3,8 @@
     <string name="popular">Popular</string>
     <string name="for_kids">For Kids</string>
     <string name="no_data">No Data</string>
+    <string name="download">Download</string>
+    <string name="downloading_data">Downloading data</string>
+    <string name="download_error">Error occurred</string>
+    <string name="download_success">Successfully downloaded</string>
 </resources>
