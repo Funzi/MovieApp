@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.R;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientOkHttpImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.ApiHelper;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Cast;
 
 
@@ -45,7 +45,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(cast.get(position).getName());
-        String address = new MovieClientOkHttpImpl().getPicture(cast.get(position).getProfilePic());
+        String address = ApiHelper.getPictureAddress(cast.get(position).getProfilePic());
         Picasso.with(holder.pic.getContext())
                 .load(address)
                 .noPlaceholder()

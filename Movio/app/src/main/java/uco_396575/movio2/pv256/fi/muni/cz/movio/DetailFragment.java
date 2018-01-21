@@ -19,8 +19,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.adapter.CastAdapter;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.ApiHelper;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.DownloadCastAsyncTask;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientOkHttpImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientRetrofitImpl;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Cast;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.MoviePersonnel;
@@ -63,7 +64,7 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
             mMovie = getArguments().getParcelable(MOVIE_TAG);
-            new DownloadCastAsyncTask(new MovieClientOkHttpImpl(), this, mMovie.getId()).execute();
+            new DownloadCastAsyncTask(new MovieClientRetrofitImpl(), this, mMovie.getId()).execute();
         }
         super.onCreate(savedInstanceState);
     }
@@ -80,12 +81,12 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
         mViewHolder.description.setText(mMovie.getOverview());
         //mViewHolder.director.setText(mMovie);
         mViewHolder.releaseDate.setText(mMovie.getReleaseDate());
-        String posterAddress = new MovieClientOkHttpImpl().getPicture(mMovie.getPosterPath());
+        String posterAddress = ApiHelper.getPictureAddress(mMovie.getPosterPath());
         Picasso.with(mViewHolder.poster.getContext())
                 .load(posterAddress)
                 .placeholder(R.drawable.star_wars)
                 .into(mViewHolder.poster);
-        String coverAddress = new MovieClientOkHttpImpl().getPictureHigherQuality(mMovie.getBackdropPath());
+        String coverAddress = ApiHelper.getPictureAddressHigherQuality(mMovie.getBackdropPath());
         Picasso.with(mViewHolder.poster.getContext())
                 .load(coverAddress)
                 .noPlaceholder()

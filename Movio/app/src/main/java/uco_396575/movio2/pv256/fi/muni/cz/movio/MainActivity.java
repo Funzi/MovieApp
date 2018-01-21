@@ -3,7 +3,12 @@ package uco_396575.movio2.pv256.fi.muni.cz.movio;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,10 +18,16 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.DownloadService;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String DOWNLOAD_INTENT = "download";
+    public static String MOVIES_EXTRA_TAG = "movies";
     private final String DETAIL_TAG = "detail";
     private final String DETAIL_FRAGMENT_TAG = "detailFragment";
     private final String MAIN_FRAGMENT_TAG = "mainFragment";
@@ -30,11 +41,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.container_main);
+        registerReceiver();
+        Intent intent = new Intent(this,DownloadService.class);
+        startService(intent);
 
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.list_fragment, MainFragment.newInstance(), MAIN_FRAGMENT_TAG).commit();
+        initActionBar();
+    }
 
+    private void initActionBar() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -60,6 +74,33 @@ public class MainActivity extends AppCompatActivity {
             Log.i("","Logging is working!");
         }
     }
+
+    private void addMainFragment(List<Movie> movies) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.list_fragment, MainFragment.newInstance(movies), MAIN_FRAGMENT_TAG).commit();
+    }
+
+    private void registerReceiver(){
+
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DOWNLOAD_INTENT);
+        bManager.registerReceiver(broadcastReceiver, intentFilter);
+
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if(intent.getAction().equals(DOWNLOAD_INTENT)){
+
+                List<Movie> movies = (ArrayList) intent.getSerializableExtra(MOVIES_EXTRA_TAG);
+                addMainFragment(movies);
+            }
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -93,6 +134,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(DETAIL_TAG, isShowingDetail);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //registerReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     public void removeDetailFragment() {

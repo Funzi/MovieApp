@@ -19,7 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.R;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientOkHttpImpl;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.ApiHelper;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
@@ -52,10 +52,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.movieName.setText(movie.getTitle());
 
         holder.movieRating.setText(Float.toString(movie.getVoteAverage()));
-        String address = new MovieClientOkHttpImpl().getPictureHigherQuality(movies.get(position).getPosterPath());
+        String address = ApiHelper.getPictureAddressHigherQuality(movies.get(position).getPosterPath());
         Picasso.with(holder.movieImage.getContext())
                 .load(address)
-                .noPlaceholder()
+                .placeholder(R.drawable.star_wars)
                 .into(holder.movieImage)
         ;
 
