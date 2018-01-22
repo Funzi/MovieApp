@@ -3,6 +3,7 @@ package uco_396575.movio2.pv256.fi.muni.cz.movio;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +15,6 @@ import java.util.List;
 
 import uco_396575.movio2.pv256.fi.muni.cz.movio.adapter.MovieAdapter;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.DownloadMovieAsyncTask;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClient;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientRetrofitImpl;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 
 public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickListener, DownloadMovieAsyncTask.OnSuccessfulDownload {
@@ -24,8 +23,12 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
-    private MovieClient mClient;
     private List<Movie> movies;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    public static MainFragment newInstance() {
+        return MainFragment.newInstance(new ArrayList());
+    }
 
     public static MainFragment newInstance(List<Movie> movies) {
         Bundle args = new Bundle();
@@ -40,9 +43,6 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
         super.onCreate(savedInstanceState);
         movies = (ArrayList<Movie>) getArguments().getSerializable(MOVIES_TAG);
         if(movies == null) movies = new ArrayList<>();
-        mClient = new MovieClientRetrofitImpl();
-        mClient.getMostPopular();
-        new DownloadMovieAsyncTask(mClient, this).execute();
     }
 
     @Nullable
@@ -55,9 +55,34 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new MovieAdapter(movies, this);
         mRecyclerView.setAdapter(mAdapter);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        initSwipeLayout();
         return view;
     }
 
+    private void initSwipeLayout() {
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            // Refresh items
+            refreshItems();
+        });
+
+
+    }
+    void refreshItems() {
+        // Load items
+        // ...
+
+        // Load complete
+        onItemsLoadComplete();
+    }
+
+    void onItemsLoadComplete() {
+        // Update the adapter and notify data set changed
+        // ...
+
+        // Stop refresh animation
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
     @Override
     public void onClick(Movie movie) {
         ((MainActivity) getActivity()).addDetailFragmentWithMovie(movie);
@@ -65,7 +90,8 @@ public class MainFragment extends Fragment implements MovieAdapter.OnMovieClickL
 
     @Override
     public void updateData(List<Movie> movies) {
-        this.movies = movies;
+        this.movies.clear();
+        this.movies.addAll(movies);
         mAdapter.setMovies(movies);
         mAdapter.notifyDataSetChanged();
     }

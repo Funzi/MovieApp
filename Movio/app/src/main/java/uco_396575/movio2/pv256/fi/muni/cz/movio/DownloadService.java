@@ -1,4 +1,4 @@
-package uco_396575.movio2.pv256.fi.muni.cz.movio.api;
+package uco_396575.movio2.pv256.fi.muni.cz.movio;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -12,14 +12,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Response;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.MainActivity;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.R;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClient;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientRetrofitImpl;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.MovieListDto;
 
+import static uco_396575.movio2.pv256.fi.muni.cz.movio.MainActivity.MOVIE_TYPE_TAG;
+
 
 public class DownloadService extends IntentService {
+
+    int type;
 
     public DownloadService() {
         super("Download Service");
@@ -35,7 +40,7 @@ public class DownloadService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
+        type = intent.getIntExtra(MOVIE_TYPE_TAG,0);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationBuilder = new NotificationCompat.Builder(this)
@@ -51,16 +56,27 @@ public class DownloadService extends IntentService {
 
     private void Download(){
         sendNotificationText(getString(R.string.downloading_data));
-        MovieClient client =new MovieClientRetrofitImpl();
+
 
         try {
-            Response<MovieListDto> movies = client.getBestScifi().execute();
+            Response<MovieListDto> movies = getApiCall().execute();
             onDownloadComplete(movies.body().getMovies());
         } catch (IOException e) {
             e.printStackTrace();
             sendNotificationText(getString(R.string.download_error));
             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
 
+        }
+    }
+
+    private Call<MovieListDto> getApiCall() {
+        MovieClient client =new MovieClientRetrofitImpl();
+        switch(type) {
+            case 1:
+                return client.getMostPopular();
+            default:
+            case 0:
+                return client.getBestScifi();
         }
     }
 
@@ -78,7 +94,6 @@ public class DownloadService extends IntentService {
     }
 
     private void onDownloadComplete(List<Movie> movies){
-
         sendIntent(movies);
         notificationManager.cancel(0);
         notificationBuilder.setProgress(0,0,false);

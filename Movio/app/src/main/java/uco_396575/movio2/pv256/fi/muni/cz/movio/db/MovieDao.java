@@ -5,6 +5,8 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import java.util.List;
+
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
@@ -20,4 +22,6 @@ public interface MovieDao {
 
     @Query("select * from movie where id = :id")
     Movie findMovieById(int id);
+    @Query("select * from movie")
+    List<Movie> getAllMovies();
 }

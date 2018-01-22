@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,6 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
         mViewHolder = new MovieViewHolder(view);
         mViewHolder.name.setText(mMovie.getTitle());
         mViewHolder.description.setText(mMovie.getOverview());
-        //mViewHolder.director.setText(mMovie);
         mViewHolder.releaseDate.setText(mMovie.getReleaseDate());
         String posterAddress = ApiHelper.getPictureAddress(mMovie.getPosterPath());
         Picasso.with(mViewHolder.poster.getContext())
@@ -161,6 +161,7 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
 
         public MovieViewHolder(View view) {
             ButterKnife.bind(this, view);
+            description.setMovementMethod(new ScrollingMovementMethod());
         }
     }
 }
