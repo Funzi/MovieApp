@@ -7,9 +7,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +21,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -25,6 +31,7 @@ import java.util.List;
 
 import uco_396575.movio2.pv256.fi.muni.cz.movio.db.MovieManager;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.sync.UpdaterSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initActionBar();
         setNavigationViewListener();
+        UpdaterSyncAdapter.initializeSyncAdapter(this);
 
         mMovieManager = new MovieManager(this);
     }
@@ -149,6 +157,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     };
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -157,9 +171,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.scifi_list:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.refresh:
+                refreshData();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshData() {
+        UpdaterSyncAdapter.syncImmediately(this);
     }
 
     @Override

@@ -7,8 +7,9 @@
     <string name="downloading_data">Downloading data</string>
     <string name="download_error">Error occurred</string>
     <string name="download_success">Successfully downloaded</string>
-    <string name="content_authority">content_authority</string>
-    <string name="sync_account_type">accout_type</string>
+    <string name="content_authority">uco_396575.movio2.pv256.fi.muni.cz.movio.db</string>
+    <string name="sync_account_type">uco_396575.movio2.pv256.fi.muni.cz.movio</string>
     <string name="overview">Overview:</string>
     <string name="cast">Cast:</string>
+    <string name="refresh">Refresh</string>
 </resources>
