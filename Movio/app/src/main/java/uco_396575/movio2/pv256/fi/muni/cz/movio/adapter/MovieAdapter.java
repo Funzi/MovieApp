@@ -55,7 +55,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         String address = ApiHelper.getPictureAddressHigherQuality(movies.get(position).getPosterPath());
         Picasso.with(holder.movieImage.getContext())
                 .load(address)
-                .placeholder(R.drawable.star_wars)
+                .noPlaceholder()
+                //.placeholder(R.drawable.star_wars)
                 .into(holder.movieImage)
         ;
 

@@ -1,10 +1,14 @@
 <resources>
-    <string name="latest_release">Latest Release</string>
+    <string name="scifi">Best Sci-fi</string>
     <string name="popular">Popular</string>
-    <string name="for_kids">For Kids</string>
+    <string name="favourite">Favourite</string>
     <string name="no_data">No Data</string>
     <string name="download">Download</string>
     <string name="downloading_data">Downloading data</string>
     <string name="download_error">Error occurred</string>
     <string name="download_success">Successfully downloaded</string>
+    <string name="content_authority">content_authority</string>
+    <string name="sync_account_type">accout_type</string>
+    <string name="overview">Overview:</string>
+    <string name="cast">Cast:</string>
 </resources>

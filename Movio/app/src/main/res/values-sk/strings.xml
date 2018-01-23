@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="latest_release">Najnovšie filmy</string>
+    <string name="scifi">Najnovšie filmy</string>
     <string name="popular">Populárne</string>
-    <string name="for_kids">Pre deti</string>
+    <string name="favourite">Pre deti</string>
     <string name="no_data">Žiadne dáta</string>
+    <string name="download">Download</string>
+    <string name="downloading_data">Downloading data</string>
+    <string name="download_error">Error occurred</string>
+    <string name="download_success">Successfully downloaded</string>
+    <string name="content_authority">content_authority</string>
+    <string name="sync_account_type">accout_type</string>
+    <string name="overview">Overview:</string>
+    <string name="cast">Cast:</string>
 </resources>

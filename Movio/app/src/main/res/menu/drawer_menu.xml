@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_first_fragment"
-            android:title="@string/latest_release" />
+            android:id="@+id/scifi_list"
+            android:title="@string/scifi" />
         <item
-            android:id="@+id/nav_second_fragment"
+            android:id="@+id/popular_list"
             android:title="@string/popular" />
         <item
-            android:id="@+id/nav_third_fragment"
-            android:title="@string/for_kids" />
+            android:id="@+id/favourite_list"
+            android:title="@string/favourite" />
     </group>
 </menu>

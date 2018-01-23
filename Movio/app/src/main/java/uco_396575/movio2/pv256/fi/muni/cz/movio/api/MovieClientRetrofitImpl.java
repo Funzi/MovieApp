@@ -40,7 +40,7 @@ public class MovieClientRetrofitImpl implements MovieClient{
     }
 
     @Override
-    public Call<MoviePersonnel> getCredits(int movieId) {
+    public Call<MoviePersonnel> getCredits(Long movieId) {
         return client.getCredits(movieId);
     }
 }

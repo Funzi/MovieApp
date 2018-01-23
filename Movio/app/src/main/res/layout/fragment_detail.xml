@@ -26,16 +26,32 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="130dp" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/movie_fab"
+            android:background="@color/colorPrimaryAccent"
+            android:src="@drawable/ic_add_circle_black_24dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="130dp"
+            />
+
         <TextView
             android:id="@+id/movie_name"
+            style="@style/WhiteFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_cover_image"
             android:layout_toRightOf="@id/movie_poster_image"
+            android:layout_marginRight="10dp"
             android:text="Star Wars" />
 
         <TextView
             android:id="@+id/movie_director_name"
+            style="@style/WhiteFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_name"
@@ -44,6 +60,9 @@
 
         <TextView
             android:id="@+id/movie_release_date"
+            style="@style/WhiteFont"
+            android:textSize="8dp"
+            android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_cover_image"
@@ -71,8 +90,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Cast"
-                    android:layout_marginBottom="20dp"/>
+                    android:text="@string/cast"
+                    android:layout_marginLeft="10dp"
+                    style="@style/BigFont"
+                    android:layout_marginBottom="1dp"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/movie_cast_list"
@@ -85,18 +106,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginLeft="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Overview" />
+                    style="@style/BigFont"
+                    android:text="@string/overview" />
 
                 <TextView
                     android:id="@+id/movie_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="14"
                     android:scrollbars="vertical" />
             </LinearLayout>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="latest_release">No translation</string>
+    <string name="scifi">No translation</string>
     <string name="popular">No translation</string>
-    <string name="for_kids">No translation</string>
+    <string name="favourite">No translation</string>
     <string name="no_data">No translation</string>
 </resources>

@@ -23,6 +23,6 @@ public interface MovieClient {
     Call<MovieListDto> getBestScifi();
 
     @GET("movie/{id}/credits" + "?" + API_KEY_PARAM)
-    Call<MoviePersonnel> getCredits(@Path("id") int movieId);
+    Call<MoviePersonnel> getCredits(@Path("id") Long movieId);
 
 }
