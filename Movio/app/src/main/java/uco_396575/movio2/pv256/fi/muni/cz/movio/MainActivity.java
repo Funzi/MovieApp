@@ -23,7 +23,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import uco_396575.movio2.pv256.fi.muni.cz.movio.db.AppDatabase;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.db.MovieManager;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
     private ActionBarDrawerToggle mDrawerToggle;
+    private MovieManager mMovieManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initActionBar();
         setNavigationViewListener();
+
+        mMovieManager = new MovieManager(this);
     }
 
     private void startDownloadServiceForMovieType(int type) {
@@ -109,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 movieType = 1;
                 break;
             case R.id.favourite_list:
-                List<Movie> movies = AppDatabase.getInMemoryDatabase(this).movieModel().getAllMovies();
+                //List<Movie> movies = AppDatabase.getInMemoryDatabase(this).movieModel().getAllMovies();
+                List<Movie> movies = mMovieManager.getMovies();
                 addMainFragment(movies);
                 getSupportActionBar().setTitle(R.string.favourite);
                 break;

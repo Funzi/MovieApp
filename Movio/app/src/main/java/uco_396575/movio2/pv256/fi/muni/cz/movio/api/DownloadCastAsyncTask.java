@@ -11,14 +11,14 @@ import uco_396575.movio2.pv256.fi.muni.cz.movio.model.MoviePersonnel;
 public class DownloadCastAsyncTask extends AsyncTask<Void, MoviePersonnel, MoviePersonnel> {
     private MovieClient mClient;
     private OnSuccessfulCastDownload mListener;
-    private Integer movieId;
+    private Long movieId;
 
     public interface OnSuccessfulCastDownload {
         void updateData(MoviePersonnel movies);
 
     }
 
-    public DownloadCastAsyncTask(MovieClient client, OnSuccessfulCastDownload listener, Integer movieId) {
+    public DownloadCastAsyncTask(MovieClient client, OnSuccessfulCastDownload listener, Long movieId) {
         mClient = client;
         mListener = listener;
         this.movieId = movieId;

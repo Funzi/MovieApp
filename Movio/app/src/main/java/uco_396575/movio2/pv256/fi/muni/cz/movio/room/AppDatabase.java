@@ -1,4 +1,4 @@
-package uco_396575.movio2.pv256.fi.muni.cz.movio.db;
+package uco_396575.movio2.pv256.fi.muni.cz.movio.room;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;

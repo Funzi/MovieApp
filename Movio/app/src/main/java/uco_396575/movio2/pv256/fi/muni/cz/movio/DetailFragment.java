@@ -24,7 +24,7 @@ import uco_396575.movio2.pv256.fi.muni.cz.movio.adapter.CastAdapter;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.ApiHelper;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.DownloadCastAsyncTask;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.api.MovieClientRetrofitImpl;
-import uco_396575.movio2.pv256.fi.muni.cz.movio.db.AppDatabase;
+import uco_396575.movio2.pv256.fi.muni.cz.movio.db.MovieManager;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Cast;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.Movie;
 import uco_396575.movio2.pv256.fi.muni.cz.movio.model.MoviePersonnel;
@@ -36,7 +36,8 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
     private CastAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private List<Cast> cast;
-    private AppDatabase mDb;
+    //private AppDatabase mDb;
+    private MovieManager mMovieManager;
 
 
     public Movie getMovie() {
@@ -70,7 +71,8 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
             mMovie = getArguments().getParcelable(MOVIE_TAG);
             new DownloadCastAsyncTask(new MovieClientRetrofitImpl(), this, mMovie.getId()).execute();
         }
-        mDb = AppDatabase.getInMemoryDatabase(getActivity().getApplicationContext());
+        //mDb = AppDatabase.getInMemoryDatabase(getActivity().getApplicationContext());
+        mMovieManager = new MovieManager(getActivity());
         super.onCreate(savedInstanceState);
     }
 
@@ -97,9 +99,9 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
                 .fit()
                 .into(mViewHolder.cover);
         if(isMovieInDb()) {
-            setFabPlus();
-        } else {
             setFabMinus();
+        } else {
+            setFabPlus();
         }
         mViewHolder.fab.setOnClickListener(view1 -> {
             if(!isMovieInDb()) {
@@ -112,24 +114,27 @@ public class DetailFragment extends Fragment implements DownloadCastAsyncTask.On
     }
 
     private boolean isMovieInDb() {
-        return mDb.movieModel().findMovieById(mMovie.getId()) != null;
+        //return mDb.movieModel().findMovieById(mMovie.getId()) != null;
+        return mMovieManager.getMovieByTitle(mMovie.getOriginalTitle()) != null;
     }
 
     private void addToDb() {
-        mDb.movieModel().insertMovie(mMovie);
-        setFabPlus();
-    }
-
-    private void removeFromDb() {
-        mDb.movieModel().deleteMovie(mMovie);
+        //mDb.movieModel().insertMovie(mMovie);
+        mMovieManager.addMovie(mMovie);
         setFabMinus();
     }
 
-    private void setFabPlus() {
-        mViewHolder.fab.setImageResource(R.drawable.ic_remove_circle_black_24dp);
+    private void removeFromDb() {
+        //mDb.movieModel().deleteMovie(mMovie);
+        mMovieManager.removeMovie(mMovie);
+        setFabPlus();
     }
 
     private void setFabMinus() {
+        mViewHolder.fab.setImageResource(R.drawable.ic_remove_circle_black_24dp);
+    }
+
+    private void setFabPlus() {
         mViewHolder.fab.setImageResource(R.drawable.ic_add_circle_black_24dp);
     }
 

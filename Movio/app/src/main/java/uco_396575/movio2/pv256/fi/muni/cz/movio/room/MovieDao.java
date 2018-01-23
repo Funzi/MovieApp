@@ -1,4 +1,4 @@
-package uco_396575.movio2.pv256.fi.muni.cz.movio.db;
+package uco_396575.movio2.pv256.fi.muni.cz.movio.room;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -21,7 +21,7 @@ public interface MovieDao {
     void deleteMovie(Movie user);
 
     @Query("select * from movie where id = :id")
-    Movie findMovieById(int id);
+    Movie findMovieById(Long id);
     @Query("select * from movie")
     List<Movie> getAllMovies();
 }

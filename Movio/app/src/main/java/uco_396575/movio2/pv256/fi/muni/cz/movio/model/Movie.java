@@ -12,7 +12,7 @@ public class Movie implements Parcelable {
     @PrimaryKey
     @NonNull
     @SerializedName("id")
-    int id;
+    Long id;
 
     @SerializedName("adult")
     boolean isAdult;
@@ -56,7 +56,7 @@ public class Movie implements Parcelable {
     public Movie() {
     }
 
-    public Movie(int id, boolean isAdult, String backdropPath, int[] genreIds, String originalLanguage, String originalTitle, String overview, String releaseDate, String posterPath, float popularity, String title, boolean isVideo, float voteAverage, int voteCount) {
+    public Movie(Long id, boolean isAdult, String backdropPath, int[] genreIds, String originalLanguage, String originalTitle, String overview, String releaseDate, String posterPath, float popularity, String title, boolean isVideo, float voteAverage, int voteCount) {
         this.id = id;
         this.isAdult = isAdult;
         this.backdropPath = backdropPath;
@@ -73,11 +73,11 @@ public class Movie implements Parcelable {
         this.voteCount = voteCount;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -193,7 +193,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeLong(this.id);
         dest.writeByte(this.isAdult ? (byte) 1 : (byte) 0);
         dest.writeString(this.backdropPath);
 //        dest.writeIntArray(this.genreIds);
@@ -210,7 +210,7 @@ public class Movie implements Parcelable {
     }
 
     protected Movie(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readLong();
         this.isAdult = in.readByte() != 0;
         this.backdropPath = in.readString();
 //        this.genreIds = in.createIntArray();
