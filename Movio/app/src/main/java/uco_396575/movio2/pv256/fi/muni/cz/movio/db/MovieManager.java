@@ -100,7 +100,11 @@ public class MovieManager {
         }
         return null;
     }
-
+    public void updateMovie(Movie movie) {
+        checkMovie(movie);
+        mContext.getContentResolver().update(MovieContract.MovieEntry.CONTENT_URI, prepareMovieValues(movie),
+                WHERE_TITLE,new String[] { movie.getOriginalTitle()});
+    }
     public void addMovie(Movie movie) {
         checkMovie(movie);
         mContext.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, prepareMovieValues(movie));
@@ -119,5 +123,12 @@ public class MovieManager {
         checkMovie(movie);
 
         mContext.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, WHERE_TITLE, new String[]{String.valueOf(movie.getOriginalTitle())});
+    }
+
+
+    public void updateMovies(List<Movie> movies) {
+        for (Movie movie:movies) {
+            updateMovie(movie);
+        }
     }
 }
